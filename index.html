@@ -127,7 +127,7 @@
   .cd .txt{font-size:12.5px; color:var(--ink-3)}
   .cd.hot .num{color:var(--urgent)}
   .cd.past .num{color:var(--ink-3)}
-  .rolling{font-size:13px; color:var(--ink-2); margin-bottom:2px}
+  .rolling{font-size:12.5px; color:var(--ink-3); margin:-6px 0 12px}
   .prog-bar{height:6px; border-radius:99px; background:var(--panel); overflow:hidden; border:1px solid var(--line)}
   .prog-fill{height:100%; background:var(--bar,var(--writing)); border-radius:99px}
   .prog-lbl{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-3); margin-top:7px}
@@ -159,6 +159,7 @@
   .tl-mark.now .d{color:var(--ok)}
   .tl-mark.hot .pin{background:var(--urgent); box-shadow:0 0 0 2px var(--urgent)}
   .tl-mark.hot .d{color:var(--urgent)}
+  .tl-mark.self .pin{background:var(--panel)}
 
   footer{border-top:1px solid var(--line); padding-top:20px; margin-top:56px;
          font-size:12.5px; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:8px 20px}
@@ -194,13 +195,13 @@
 
 <section>
   <div class="sec-head"><h2>Deadline Runway</h2><span class="sec-rule"></span></div>
-  <p class="sec-note">Fixed conference deadlines only — journal submissions are rolling.</p>
+  <p class="sec-note">Conference deadlines plus self-imposed completion targets (hollow marker).</p>
   <div class="tl"><div class="tl-track" id="tl"></div></div>
 </section>
 
 <section>
-  <div class="sec-head"><h2>Pipeline</h2><span class="count" id="c-backlog"></span><span class="sec-rule"></span></div>
-  <p class="sec-note">Open threads with no deadline attached yet.</p>
+  <div class="sec-head"><h2>Tools &amp; Open Threads</h2><span class="count" id="c-backlog"></span><span class="sec-rule"></span></div>
+  <p class="sec-note">Supporting software and investigations \u2014 live, but with no submission deadline attached.</p>
   <div id="s-backlog"></div>
 </section>
 
@@ -219,8 +220,9 @@
    stage    : review items only -> 0 submitted, 1 under review, 2 decision
    submitted / deadline : "YYYY-MM-DD"   (days-in-review & countdowns are derived)
    rolling  : true for journals with no fixed deadline
+   selfSet  : true when the date is your own target, not the venue deadline
    progress : 0-100, drafting completeness
-   facts    : extra [label, value] rows
+   repo     : GitHub repository URL\n   demo     : live site URL\n   facts    : extra [label, value] rows
    next     : the single next action for this paper
    ===================================================================== */
 const ITEMS = [
@@ -246,6 +248,7 @@ const ITEMS = [
     stage:1,
     badge:"Under Review",
     facts:[["Round","Submission 1"]],
+    repo:"https://github.com/TM-Research/GLADE_FPTM",
     next:"Await first decision."
   },
   {
@@ -254,6 +257,9 @@ const ITEMS = [
     kind:"Journal Article",
     title:"Characterizing Post-Training Model-Artifact Tampering in Tsetlin Machines",
     rolling:true,
+    deadline:"2026-09-04",
+    selfSet:true,
+    short:"IEEE TIFS",
     progress:35,
     badge:"Drafting",
     desc:"Threat characterisation of clause- and state-level tampering in trained TM artifacts after deployment.",
@@ -263,6 +269,7 @@ const ITEMS = [
   {
     status:"writing",
     venue:"IEEE ICASSP 2027",
+    short:"ICASSP 2027",
     kind:"Conference Paper",
     title:"ICASSP 2027 submission — topic to be locked in",
     deadline:"2026-09-10",
@@ -275,6 +282,7 @@ const ITEMS = [
   {
     status:"writing",
     venue:"IEEE HOST 2027",
+    short:"HOST 2027",
     kind:"Conference Paper",
     title:"HOST 2027 submission — topic to be locked in",
     deadline:"2026-10-20",
@@ -287,23 +295,27 @@ const ITEMS = [
   },
   {
     status:"backlog",
-    venue:"Tooling / Outreach",
+    venue:"TsetlinLab",
     kind:"Software",
     title:"Interactive in-browser lab for interpretable Tsetlin Machines",
-    badge:"Not started",
-    desc:"Client-side playground: train a small TM in the browser, inspect clauses live, and show why a decision was made. Doubles as a demo asset for papers and talks.",
+    badge:"Live prototype",
+    desc:"Read every rule in plain language, trace any sample end-to-end (inputs \u2192 clauses fired \u2192 vote \u2192 class), and compare binarisers and engines. Runs fully client-side on WASM \u2014 no server.",
+    repo:"https://github.com/TM-Research/TsetlinLab",
+    demo:"https://tm-research.github.io/TsetlinLab/",
     facts:[],
-    next:"Scope the MVP — training loop plus clause inspector."
+    next:"Polish for public release."
   },
   {
     status:"backlog",
-    venue:"Research",
+    venue:"Booleanizers",
     kind:"Investigation",
     title:"Streaming Booleanizer",
-    badge:"Scoping",
-    desc:"An online binarisation scheme that adapts thresholds without a full retrain — the missing piece for continual on-device TM training.",
+    badge:"In progress",
+    desc:"An online binarisation scheme that adapts thresholds without a full retrain \u2014 the missing piece for continual on-device TM training. Benchmark harness already compares TM against classical ML across 148 datasets.",
+    repo:"https://github.com/TM-Research/Boolenizers-private-",
+    demo:"https://tm-research.github.io/Boolenizers-private-/",
     facts:[],
-    next:"Literature sweep on online / adaptive binarisation."
+    next:"Extend the benchmark to an adaptive-threshold / streaming variant."
   }
 ];
 /* ===================== end of editable section ===================== */
@@ -350,17 +362,20 @@ function band(i){
   if(i.status !== "writing") return "";
 
   let inner = "";
-  if(i.rolling){
-    inner = `<div class="rolling">Rolling submission — journal, no fixed deadline.</div>`;
-  }else if(i.deadline){
+  if(i.deadline){
     const d = days(i.deadline), cls = d < 0 ? "past" : d <= 21 ? "hot" : "";
+    const what = i.selfSet ? "own target" : "deadline";
     inner = `<div class="cd ${cls}"><span class="num">${Math.abs(d)}</span>
-             <span class="txt">${d < 0 ? "days past" : "days left"} — deadline ${fmt(i.deadline)}</span></div>`;
+             <span class="txt">${d < 0 ? "days past" : "days left"} — ${what} ${fmt(i.deadline)}</span></div>`;
+    if(i.rolling) inner += `<div class="rolling">Journal submission is rolling — this date is self-imposed.</div>`;
+  }else if(i.rolling){
+    inner = `<div class="rolling">Rolling submission — journal, no fixed deadline.</div>`;
   }
   const p = i.progress || 0;
   inner += `<div class="prog-bar"><div class="prog-fill" style="width:${p}%"></div></div>
             <div class="prog-lbl"><span>Draft progress</span><span>${p}%</span></div>`;
-  return `<div class="band"><div class="band-lbl">${i.rolling ? "Submission window" : "Countdown"}</div>${inner}</div>`;
+  const lbl = i.selfSet ? "Self-set completion target" : i.deadline ? "Countdown" : "Submission window";
+  return `<div class="band"><div class="band-lbl">${lbl}</div>${inner}</div>`;
 }
 
 function facts(i){
@@ -370,9 +385,11 @@ function facts(i){
     rows.push(["Submitted", fmt(i.submitted)]);
     rows.push(["Days in review", `${-days(i.submitted)}`]);
   }
-  if(i.deadline) rows.push(["Deadline", fmt(i.deadline)]);
+  if(i.deadline) rows.push([i.selfSet ? "Target date" : "Deadline", fmt(i.deadline)]);
   (i.facts||[]).forEach(([k,v]) => rows.push([k, esc(v)]));
-  if(i.link) rows.push(["Call for papers", `<a href="${i.link}" target="_blank" rel="noopener">host.conferences.computer.org ↗</a>`]);
+  if(i.repo) rows.push(["Repository", `<a href="${i.repo}" target="_blank" rel="noopener">${esc(i.repo.replace(/^https:\/\/github\.com\//,""))} ↗</a>`]);
+  if(i.demo) rows.push(["Live site", `<a href="${i.demo}" target="_blank" rel="noopener">open ↗</a>`]);
+  if(i.link) rows.push(["Call for papers", `<a href="${i.link}" target="_blank" rel="noopener">${esc(i.link.replace(/^https?:\/\//,"").replace(/\/$/,""))} ↗</a>`]);
   if(!rows.length) return "";
   return '<div class="facts">' + rows.map(([k,v]) =>
     `<div class="f"><div class="fk">${k}</div><div class="fv">${v}</div></div>`).join("") + "</div>";
@@ -407,9 +424,9 @@ if(dls.length){
         <div class="w">${today.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</div></div>`;
   dls.forEach(i=>{
     const d = days(i.deadline);
-    h += `<div class="tl-mark ${d<=21?"hot":""}" style="left:${pct(d)}%"><div class="pin"></div>
+    h += `<div class="tl-mark ${d<=21?"hot":""} ${i.selfSet?"self":""}" style="left:${pct(d)}%"><div class="pin"></div>
           <div class="d">${fmt(i.deadline,{day:"numeric",month:"short"})}</div>
-          <div class="w">${esc(i.venue)}<br>${d} days</div></div>`;
+          <div class="w">${esc(i.short || i.venue)}${i.selfSet?" (own)":""}<br>${d} days</div></div>`;
   });
   document.getElementById("tl").innerHTML = h;
 }
