@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rakesh Reddy Yakkati — Research Progress</title>
+<meta name="description" content="Per-paper status of manuscripts under review, papers in writing, and upcoming deadlines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbfaf8; --panel:#ffffff; --panel-2:#f6f4f0;
+    --ink:#16150f; --ink-2:#4a4740; --ink-3:#827d72; --ink-4:#a8a297;
+    --line:#e4e0d8; --line-2:#efece5;
+    --review:#2563eb; --review-bg:#eaf1ff;
+    --writing:#b45309; --writing-bg:#fdf1dd;
+    --backlog:#5b6470; --backlog-bg:#eef0f3;
+    --urgent:#c2410c; --urgent-bg:#fdece2; --ok:#15803d;
+    --ghost:#f1eee8;
+    --shadow:0 1px 2px rgba(20,18,12,.05), 0 10px 28px -14px rgba(20,18,12,.16);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f0f11; --panel:#17171a; --panel-2:#1f1f24;
+      --ink:#f2f0ec; --ink-2:#b8b4ad; --ink-3:#8b8780; --ink-4:#5f5c56;
+      --line:#2c2c31; --line-2:#242429;
+      --review:#7ba7ff; --review-bg:#16233d;
+      --writing:#f0b657; --writing-bg:#3a2a11;
+      --backlog:#9aa3ae; --backlog-bg:#23262b;
+      --urgent:#fb923c; --urgent-bg:#3a2010; --ok:#4ade80;
+      --ghost:#1e1e23;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -16px rgba(0,0,0,.75);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f0f11; --panel:#17171a; --panel-2:#1f1f24;
+    --ink:#f2f0ec; --ink-2:#b8b4ad; --ink-3:#8b8780; --ink-4:#5f5c56;
+    --line:#2c2c31; --line-2:#242429;
+    --review:#7ba7ff; --review-bg:#16233d;
+    --writing:#f0b657; --writing-bg:#3a2a11;
+    --backlog:#9aa3ae; --backlog-bg:#23262b;
+    --urgent:#fb923c; --urgent-bg:#3a2010; --ok:#4ade80;
+    --ghost:#1e1e23;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -16px rgba(0,0,0,.75);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px 96px}
+  a{color:inherit}
+  .mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; letter-spacing:-.02em}
+
+  /* ---------- header ---------- */
+  header.top{padding:56px 0 26px}
+  .eyebrow{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); font-weight:600; margin:0 0 12px}
+  h1{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:clamp(30px,5.2vw,46px);
+     line-height:1.1; letter-spacing:-.015em; margin:0 0 10px}
+  .sub{color:var(--ink-2); margin:0; max-width:58ch}
+  .meta-row{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-top:20px; font-size:12.5px; color:var(--ink-3)}
+  .theme-btn{margin-left:auto; background:var(--panel); border:1px solid var(--line); color:var(--ink-2);
+             font:inherit; font-size:12px; padding:6px 12px; border-radius:999px; cursor:pointer}
+  .theme-btn:hover{border-color:var(--ink-3); color:var(--ink)}
+
+  /* ---------- stat strip ---------- */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:32px 0 8px}
+  .stat{background:var(--panel); padding:16px 18px}
+  .stat .n{font-family:Newsreader,Georgia,serif; font-size:30px; line-height:1; font-weight:500}
+  .stat .l{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); margin-top:7px; font-weight:600}
+  @media(max-width:640px){ .stats{grid-template-columns:repeat(2,1fr)} }
+
+  /* ---------- section ---------- */
+  section{margin-top:52px}
+  .sec-head{display:flex; align-items:center; gap:12px; margin-bottom:6px}
+  .sec-rule{flex:1; height:1px; background:var(--line)}
+  h2{font-family:Newsreader,Georgia,serif; font-weight:500; letter-spacing:-.01em; font-size:22px; margin:0; white-space:nowrap}
+  .count{font-size:11px; font-weight:600; color:var(--ink-3); border:1px solid var(--line); border-radius:999px; padding:2px 9px}
+  .sec-note{font-size:12.5px; color:var(--ink-3); margin:0 0 22px}
+
+  /* ---------- paper block ---------- */
+  .paper{background:var(--panel); border:1px solid var(--line); border-radius:16px;
+         padding:26px 28px 22px; margin-bottom:22px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+  .paper::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--bar,transparent)}
+  .paper.review{--bar:var(--review)} .paper.writing{--bar:var(--writing)} .paper.backlog{--bar:var(--backlog)}
+  .idx{position:absolute; top:14px; right:22px; font-family:Newsreader,Georgia,serif;
+       font-size:56px; line-height:1; font-weight:500; color:var(--ghost); user-select:none; pointer-events:none}
+
+  .p-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin-bottom:12px; padding-right:56px}
+  .venue{font-size:12.5px; font-weight:600; color:var(--ink-2)}
+  .kind{font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600;
+        color:var(--ink-3); border:1px solid var(--line); border-radius:4px; padding:1px 6px}
+  .badge{font-size:11px; font-weight:600; letter-spacing:.03em; padding:4px 11px; border-radius:999px; white-space:nowrap}
+  .badge.review{color:var(--review); background:var(--review-bg)}
+  .badge.writing{color:var(--writing); background:var(--writing-bg)}
+  .badge.backlog{color:var(--backlog); background:var(--backlog-bg)}
+
+  h3{font-family:Newsreader,Georgia,serif; font-weight:500; letter-spacing:-.012em;
+     font-size:22px; line-height:1.28; margin:0 0 12px; padding-right:40px}
+  .desc{color:var(--ink-2); font-size:14px; margin:0 0 18px; max-width:66ch}
+
+  /* status band */
+  .band{background:var(--panel-2); border:1px solid var(--line-2); border-radius:11px;
+        padding:15px 18px; margin-bottom:18px}
+  .band-lbl{font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; font-weight:600; color:var(--ink-3); margin-bottom:12px}
+
+  /* stepper */
+  .steps{display:flex; align-items:center}
+  .step{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink-3); white-space:nowrap}
+  .dot{width:10px; height:10px; border-radius:50%; border:1.5px solid var(--line); background:var(--panel); flex:none}
+  .step.done .dot{background:var(--review); border-color:var(--review)}
+  .step.done{color:var(--ink-2)}
+  .step.now .dot{background:var(--review); border-color:var(--review); box-shadow:0 0 0 4px var(--review-bg)}
+  .step.now{color:var(--review); font-weight:600}
+  .rail{height:1.5px; background:var(--line); flex:1; min-width:18px; margin:0 10px}
+  .rail.done{background:var(--review)}
+  @media(max-width:560px){ .step span{display:none} .rail{min-width:10px} }
+
+  /* countdown + progress */
+  .cd{display:flex; align-items:baseline; gap:9px; margin-bottom:14px}
+  .cd .num{font-family:Newsreader,Georgia,serif; font-size:30px; font-weight:600; line-height:1}
+  .cd .txt{font-size:12.5px; color:var(--ink-3)}
+  .cd.hot .num{color:var(--urgent)}
+  .cd.past .num{color:var(--ink-3)}
+  .rolling{font-size:13px; color:var(--ink-2); margin-bottom:2px}
+  .prog-bar{height:6px; border-radius:99px; background:var(--panel); overflow:hidden; border:1px solid var(--line)}
+  .prog-fill{height:100%; background:var(--bar,var(--writing)); border-radius:99px}
+  .prog-lbl{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-3); margin-top:7px}
+
+  /* facts grid */
+  .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px;
+         background:var(--line-2); border:1px solid var(--line-2); border-radius:11px; overflow:hidden}
+  .f{background:var(--panel); padding:11px 14px}
+  .fk{font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; color:var(--ink-4); margin-bottom:4px}
+  .fv{font-size:13.5px; font-weight:500; color:var(--ink)}
+  .fv a{color:var(--review); text-decoration:none}
+  .fv a:hover{text-decoration:underline}
+
+  /* next action */
+  .next{display:flex; gap:9px; align-items:baseline; margin-top:16px; padding-top:15px; border-top:1px solid var(--line-2); font-size:13.5px}
+  .next .arrow{color:var(--ink-4); flex:none}
+  .next .nk{font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; color:var(--ink-4); flex:none}
+  .next .nv{color:var(--ink-2)}
+
+  /* ---------- timeline ---------- */
+  .tl{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px 26px 16px; box-shadow:var(--shadow)}
+  .tl-track{position:relative; height:64px; margin:24px 4px 0}
+  .tl-line{position:absolute; left:0; right:0; top:11px; height:2px; background:var(--line)}
+  .tl-mark{position:absolute; top:0; transform:translateX(-50%); text-align:center; width:104px}
+  .tl-mark .pin{width:12px; height:12px; border-radius:50%; margin:5px auto 0; background:var(--writing); border:2px solid var(--panel); box-shadow:0 0 0 2px var(--writing)}
+  .tl-mark .d{font-size:11.5px; font-weight:600; margin-top:10px; color:var(--ink-2)}
+  .tl-mark .w{font-size:10.5px; color:var(--ink-3); line-height:1.35}
+  .tl-mark.now .pin{background:var(--ok); box-shadow:0 0 0 2px var(--ok)}
+  .tl-mark.now .d{color:var(--ok)}
+  .tl-mark.hot .pin{background:var(--urgent); box-shadow:0 0 0 2px var(--urgent)}
+  .tl-mark.hot .d{color:var(--urgent)}
+
+  footer{border-top:1px solid var(--line); padding-top:20px; margin-top:56px;
+         font-size:12.5px; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:8px 20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Research Progress Board</p>
+  <h1>Rakesh Reddy Yakkati</h1>
+  <p class="sub">Tsetlin Machines for resource-efficient, interpretable intrusion detection at the edge — one block per paper, with live status and deadline counters.</p>
+  <div class="meta-row">
+    <span>Last updated <strong id="updated" style="color:var(--ink-2);font-weight:500"></strong></span>
+    <span>·</span>
+    <span>Counters recompute on every page load</span>
+    <button class="theme-btn" id="theme">Theme</button>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<section>
+  <div class="sec-head"><h2>Under Review</h2><span class="count" id="c-review"></span><span class="sec-rule"></span></div>
+  <p class="sec-note">Submitted manuscripts awaiting an editorial decision.</p>
+  <div id="s-review"></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>In Writing</h2><span class="count" id="c-writing"></span><span class="sec-rule"></span></div>
+  <p class="sec-note">Active drafts and committed submission targets.</p>
+  <div id="s-writing"></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Deadline Runway</h2><span class="sec-rule"></span></div>
+  <p class="sec-note">Fixed conference deadlines only — journal submissions are rolling.</p>
+  <div class="tl"><div class="tl-track" id="tl"></div></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Pipeline</h2><span class="count" id="c-backlog"></span><span class="sec-rule"></span></div>
+  <p class="sec-note">Open threads with no deadline attached yet.</p>
+  <div id="s-backlog"></div>
+</section>
+
+<footer>
+  <span>Static page for GitHub Pages.</span>
+  <span>Edit the <code class="mono">ITEMS</code> array in <code class="mono">index.html</code> to update any status.</span>
+</footer>
+
+</div>
+
+<script>
+/* =====================================================================
+   EDIT HERE — every block on the page is generated from this list.
+
+   status   : "review" | "writing" | "backlog"
+   stage    : review items only -> 0 submitted, 1 under review, 2 decision
+   submitted / deadline : "YYYY-MM-DD"   (days-in-review & countdowns are derived)
+   rolling  : true for journals with no fixed deadline
+   progress : 0-100, drafting completeness
+   facts    : extra [label, value] rows
+   next     : the single next action for this paper
+   ===================================================================== */
+const ITEMS = [
+  {
+    status:"review",
+    venue:"IEEE Internet of Things Journal",
+    kind:"Regular Article",
+    title:"Resource-Efficient On-Device Training for IoT Intrusion Detection Using a Tsetlin Machine on ESP32 Microcontrollers",
+    id:"IoT-71372-2026",
+    submitted:"2026-07-25",
+    stage:1,
+    badge:"Under Review",
+    facts:[["Round","Submission 2"]],
+    next:"Await reviewer reports on the resubmission."
+  },
+  {
+    status:"review",
+    venue:"IEEE Transactions on Industrial Informatics",
+    kind:"Regular Paper",
+    title:"Gap-Aware Booleanisation and Lightweight Tsetlin Machine for Intrusion Detection on Edge",
+    id:"TII-26-5676",
+    submitted:"2026-06-13",
+    stage:1,
+    badge:"Under Review",
+    facts:[["Round","Submission 1"]],
+    next:"Await first decision."
+  },
+  {
+    status:"writing",
+    venue:"IEEE Transactions on Information Forensics and Security",
+    kind:"Journal Article",
+    title:"Characterizing Post-Training Model-Artifact Tampering in Tsetlin Machines",
+    rolling:true,
+    progress:35,
+    badge:"Drafting",
+    desc:"Threat characterisation of clause- and state-level tampering in trained TM artifacts after deployment.",
+    facts:[["Target","IEEE TIFS"]],
+    next:"Finish the threat model and attack taxonomy."
+  },
+  {
+    status:"writing",
+    venue:"IEEE ICASSP 2027",
+    kind:"Conference Paper",
+    title:"ICASSP 2027 submission — topic to be locked in",
+    deadline:"2026-09-10",
+    progress:0,
+    badge:"Planning",
+    desc:"Signal-processing-angled slot. Nothing committed yet — the deadline is the binding constraint.",
+    facts:[],
+    next:"Decide the topic and confirm scope."
+  },
+  {
+    status:"writing",
+    venue:"IEEE HOST 2027",
+    kind:"Conference Paper",
+    title:"HOST 2027 submission — topic to be locked in",
+    deadline:"2026-10-20",
+    progress:0,
+    badge:"Planning",
+    desc:"Symposium on Hardware Oriented Security and Trust. A natural follow-on from the TIFS tampering work.",
+    link:"https://host.conferences.computer.org/2027/",
+    facts:[],
+    next:"Pick a hardware-security angle once the TIFS draft settles."
+  },
+  {
+    status:"backlog",
+    venue:"Tooling / Outreach",
+    kind:"Software",
+    title:"Interactive in-browser lab for interpretable Tsetlin Machines",
+    badge:"Not started",
+    desc:"Client-side playground: train a small TM in the browser, inspect clauses live, and show why a decision was made. Doubles as a demo asset for papers and talks.",
+    facts:[],
+    next:"Scope the MVP — training loop plus clause inspector."
+  },
+  {
+    status:"backlog",
+    venue:"Research",
+    kind:"Investigation",
+    title:"Streaming Booleanizer",
+    badge:"Scoping",
+    desc:"An online binarisation scheme that adapts thresholds without a full retrain — the missing piece for continual on-device TM training.",
+    facts:[],
+    next:"Literature sweep on online / adaptive binarisation."
+  }
+];
+/* ===================== end of editable section ===================== */
+
+const MS = 86400000;
+const today = new Date(); today.setHours(0,0,0,0);
+const fmt   = (iso,opt) => new Date(iso+"T00:00:00").toLocaleDateString("en-GB", opt || {day:"numeric",month:"short",year:"numeric"});
+const days  = iso => Math.round((new Date(iso+"T00:00:00") - today) / MS);
+const esc   = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad   = n => String(n).padStart(2,"0");
+
+document.getElementById("updated").textContent =
+  today.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+
+const nReview  = ITEMS.filter(i=>i.status==="review").length;
+const nWriting = ITEMS.filter(i=>i.status==="writing").length;
+const nBacklog = ITEMS.filter(i=>i.status==="backlog").length;
+const nextDl   = ITEMS.filter(i=>i.deadline && days(i.deadline)>=0).sort((a,b)=>days(a.deadline)-days(b.deadline))[0];
+
+document.getElementById("stats").innerHTML = [
+  [nReview,"Under review"], [nWriting,"In writing"], [nBacklog,"In pipeline"],
+  [nextDl ? days(nextDl.deadline) : "—","Days to next deadline"]
+].map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+
+document.getElementById("c-review").textContent  = nReview;
+document.getElementById("c-writing").textContent = nWriting;
+document.getElementById("c-backlog").textContent = nBacklog;
+
+const STEPS = ["Submitted","Under review","Decision"];
+function stepper(stage){
+  let h = '<div class="steps">';
+  STEPS.forEach((s,i)=>{
+    if(i) h += `<div class="rail${i<=stage?" done":""}"></div>`;
+    const cls = i<stage ? "done" : i===stage ? "now" : "";
+    h += `<div class="step ${cls}"><span class="dot"></span><span>${s}</span></div>`;
+  });
+  return h + "</div>";
+}
+
+function band(i){
+  if(i.status === "review")
+    return `<div class="band"><div class="band-lbl">Review status</div>${stepper(i.stage)}</div>`;
+
+  if(i.status !== "writing") return "";
+
+  let inner = "";
+  if(i.rolling){
+    inner = `<div class="rolling">Rolling submission — journal, no fixed deadline.</div>`;
+  }else if(i.deadline){
+    const d = days(i.deadline), cls = d < 0 ? "past" : d <= 21 ? "hot" : "";
+    inner = `<div class="cd ${cls}"><span class="num">${Math.abs(d)}</span>
+             <span class="txt">${d < 0 ? "days past" : "days left"} — deadline ${fmt(i.deadline)}</span></div>`;
+  }
+  const p = i.progress || 0;
+  inner += `<div class="prog-bar"><div class="prog-fill" style="width:${p}%"></div></div>
+            <div class="prog-lbl"><span>Draft progress</span><span>${p}%</span></div>`;
+  return `<div class="band"><div class="band-lbl">${i.rolling ? "Submission window" : "Countdown"}</div>${inner}</div>`;
+}
+
+function facts(i){
+  const rows = [];
+  if(i.id) rows.push(["Manuscript ID", `<span class="mono">${esc(i.id)}</span>`]);
+  if(i.submitted){
+    rows.push(["Submitted", fmt(i.submitted)]);
+    rows.push(["Days in review", `${-days(i.submitted)}`]);
+  }
+  if(i.deadline) rows.push(["Deadline", fmt(i.deadline)]);
+  (i.facts||[]).forEach(([k,v]) => rows.push([k, esc(v)]));
+  if(i.link) rows.push(["Call for papers", `<a href="${i.link}" target="_blank" rel="noopener">host.conferences.computer.org ↗</a>`]);
+  if(!rows.length) return "";
+  return '<div class="facts">' + rows.map(([k,v]) =>
+    `<div class="f"><div class="fk">${k}</div><div class="fv">${v}</div></div>`).join("") + "</div>";
+}
+
+function paper(i, n){
+  let h = `<article class="paper ${i.status}"><div class="idx">${pad(n)}</div>`;
+  h += `<div class="p-head"><span class="venue">${esc(i.venue)}</span>`;
+  h += `<span class="kind">${esc(i.kind)}</span>`;
+  h += `<span class="badge ${i.status}">${esc(i.badge)}</span></div>`;
+  h += `<h3>${esc(i.title)}</h3>`;
+  if(i.desc) h += `<p class="desc">${esc(i.desc)}</p>`;
+  h += band(i);
+  h += facts(i);
+  if(i.next) h += `<div class="next"><span class="nk">Next</span><span class="arrow">→</span><span class="nv">${esc(i.next)}</span></div>`;
+  return h + "</article>";
+}
+
+let n = 0;
+["review","writing","backlog"].forEach(s=>{
+  document.getElementById("s-"+s).innerHTML =
+    ITEMS.filter(i=>i.status===s).map(i => paper(i, ++n)).join("");
+});
+
+/* ---- deadline runway ---- */
+const dls = ITEMS.filter(i=>i.deadline).sort((a,b)=>days(a.deadline)-days(b.deadline));
+if(dls.length){
+  const span = Math.max(days(dls[dls.length-1].deadline), 1) + 12;
+  const pct  = d => Math.min(94, Math.max(6, (d/span)*100));
+  let h = '<div class="tl-line"></div>';
+  h += `<div class="tl-mark now" style="left:3%"><div class="pin"></div><div class="d">Today</div>
+        <div class="w">${today.toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</div></div>`;
+  dls.forEach(i=>{
+    const d = days(i.deadline);
+    h += `<div class="tl-mark ${d<=21?"hot":""}" style="left:${pct(d)}%"><div class="pin"></div>
+          <div class="d">${fmt(i.deadline,{day:"numeric",month:"short"})}</div>
+          <div class="w">${esc(i.venue)}<br>${d} days</div></div>`;
+  });
+  document.getElementById("tl").innerHTML = h;
+}
+
+/* ---- theme toggle ---- */
+const root = document.documentElement;
+try{ const t = localStorage.getItem("theme"); if(t) root.setAttribute("data-theme", t); }catch(e){}
+document.getElementById("theme").addEventListener("click", ()=>{
+  const dark = root.getAttribute("data-theme") === "dark" ||
+    (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+  const next = dark ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  try{ localStorage.setItem("theme", next); }catch(e){}
+});
+</script>
+</body>
+</html>
