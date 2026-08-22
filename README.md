@@ -3,7 +3,7 @@
 A single-file static page tracking manuscripts under review, papers in writing,
 and queued work. Deployed with GitHub Pages.
 
-**Live:** `https://<your-username>.github.io/<repo-name>/`
+**Live:** https://rakesh2109.github.io/PhD_Progress/
 
 ## Updating status
 
@@ -47,7 +47,7 @@ gh repo create <repo-name> --public --source=. --push
 ```
 
 Then in the repo: **Settings → Pages → Source: Deploy from a branch → `main` / `/ (root)`**.
-The site is live at `https://<your-username>.github.io/<repo-name>/` in about a minute.
+The site is live at `https://rakesh2109.github.io/PhD_Progress/` in about a minute.
 
 To push later updates:
 
