@@ -224,32 +224,51 @@
    progress : 0-100, drafting completeness
    repo     : GitHub repository URL\n   demo     : live site URL\n   facts    : extra [label, value] rows
    next     : the single next action for this paper
+   deadline may carry a time and zone, e.g. "2026-09-29T05:59:00+02:00" (countdown switches to hours in the last 2 days)
+   decided  : decision-letter date; with resubmit:[minMonths,maxMonths] the window opens/closes are computed
+              and the close date becomes the deadline automatically
    ===================================================================== */
 const ITEMS = [
   {
-    status:"review",
+    status:"writing",
     venue:"IEEE Internet of Things Journal",
-    kind:"Regular Article",
+    short:"IoT-J revision",
+    kind:"Regular Article \u00b7 Revision 1",
     title:"Resource-Efficient On-Device Training for IoT Intrusion Detection Using a Tsetlin Machine on ESP32 Microcontrollers",
     id:"IoT-71372-2026",
-    submitted:"2026-07-25",
-    stage:1,
-    badge:"Under Review",
-    facts:[["Round","Submission 2"]],
-    next:"Await reviewer reports on the resubmission."
+    deadline:"2026-09-29T05:59:00+02:00",
+    progress:80,
+    badge:"In Revision",
+    desc:"Reviews received \u2014 revision in progress. Portal cut-off is 29 Sep 2026, 05:59 CEST, so treat the night of 28 Sep as the real deadline.",
+    facts:[["Round","Revision 1"]],
+    next:"Finish the response-to-reviewers letter and upload the revised manuscript by 28 Sep."
+  },
+  {
+    status:"writing",
+    venue:"IEEE Transactions on Industrial Informatics",
+    short:"TII resubmission",
+    kind:"Regular Paper \u00b7 Resubmission",
+    title:"Gap-Aware Booleanisation and Lightweight Tsetlin Machine for Intrusion Detection on Edge",
+    id:"TII-26-5676",
+    decided:"2026-09-27",
+    resubmit:[1,6],
+    progress:10,
+    badge:"Reject & Resubmit",
+    desc:"Rejected with encouragement to resubmit after an in-depth revision. Resubmission is allowed from 1 month after the decision and the window closes 6 months after it; later submissions count as new.",
+    repo:"https://github.com/TM-Research/GLADE_FPTM",
+    next:"Map every AE/reviewer comment to a planned change and draft the point-by-point response."
   },
   {
     status:"review",
-    venue:"IEEE Transactions on Industrial Informatics",
-    kind:"Regular Paper",
-    title:"Gap-Aware Booleanisation and Lightweight Tsetlin Machine for Intrusion Detection on Edge",
-    id:"TII-26-5676",
-    submitted:"2026-06-13",
+    venue:"IEEE ICASSP 2027",
+    kind:"Conference Paper",
+    title:"CAS: Clause Activation Signatures for Per-Attack-Family Intrusion Fingerprinting",
+    submitted:"2026-09-10",
     stage:1,
     badge:"Under Review",
+    desc:"CAS turns a Tsetlin Machine\u2019s own clause activations into compact, per-attack-family signatures \u2014 detection and attribution read straight off the model\u2019s internal evidence, with no separate explainer.",
     facts:[["Round","Submission 1"]],
-    repo:"https://github.com/TM-Research/GLADE_FPTM",
-    next:"Await first decision."
+    next:"Await reviews."
   },
   {
     status:"writing",
@@ -265,19 +284,6 @@ const ITEMS = [
     desc:"Threat characterisation of clause- and state-level tampering in trained TM artifacts after deployment.",
     facts:[["Target","IEEE TIFS"]],
     next:"Finish the threat model and attack taxonomy."
-  },
-  {
-    status:"writing",
-    venue:"IEEE ICASSP 2027",
-    short:"ICASSP 2027",
-    kind:"Conference Paper",
-    title:"CAS: Clause Activation Signatures for Per-Attack-Family Intrusion Fingerprinting",
-    deadline:"2026-09-10",
-    progress:10,
-    badge:"Topic locked",
-    desc:"CAS turns a Tsetlin Machine\u2019s own clause activations into compact, per-attack-family signatures \u2014 detection and attribution read straight off the model\u2019s internal evidence, with no separate explainer.",
-    facts:[["Working title","Yes \u2014 edit freely"]],
-    next:"Fix the evaluation protocol and target datasets."
   },
   {
     status:"writing",
@@ -322,13 +328,30 @@ const ITEMS = [
 
 const MS = 86400000;
 const today = new Date(); today.setHours(0,0,0,0);
-const fmt   = (iso,opt) => new Date(iso+"T00:00:00").toLocaleDateString("en-GB", opt || {day:"numeric",month:"short",year:"numeric"});
-const days  = iso => Math.round((new Date(iso+"T00:00:00") - today) / MS);
+const toDate = iso => new Date(iso.length > 10 ? iso : iso+"T00:00:00");
+const fmt   = (iso,opt) => toDate(iso).toLocaleDateString("en-GB", opt || {day:"numeric",month:"short",year:"numeric"});
+const days  = iso => { const d = toDate(iso); d.setHours(0,0,0,0); return Math.round((d - today) / MS); };
+const hoursLeft = iso => Math.floor((toDate(iso) - Date.now()) / 3600000);
+const addMonths = (iso,m) => { const d = toDate(iso); d.setMonth(d.getMonth()+m);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+const fmtWhen = iso => iso.length > 10
+  ? toDate(iso).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})
+  : fmt(iso);
+
+/* derive resubmission windows from the decision date */
+ITEMS.forEach(i => {
+  if(i.decided && i.resubmit){
+    i.opens = addMonths(i.decided, i.resubmit[0]);
+    i.closes = addMonths(i.decided, i.resubmit[1]);
+    if(!i.deadline) i.deadline = i.closes;
+  }
+});
 const esc   = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const pad   = n => String(n).padStart(2,"0");
 
 document.getElementById("updated").textContent =
-  today.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  new Date(document.lastModified).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+setTimeout(() => location.reload(), 3600000);   // keep countdowns current in an open tab
 
 const nReview  = ITEMS.filter(i=>i.status==="review").length;
 const nWriting = ITEMS.filter(i=>i.status==="writing").length;
@@ -364,9 +387,17 @@ function band(i){
   let inner = "";
   if(i.deadline){
     const d = days(i.deadline), cls = d < 0 ? "past" : d <= 21 ? "hot" : "";
-    const what = i.selfSet ? "own target" : "deadline";
-    inner = `<div class="cd ${cls}"><span class="num">${Math.abs(d)}</span>
-             <span class="txt">${d < 0 ? "days past" : "days left"} — ${what} ${fmt(i.deadline)}</span></div>`;
+    const what = i.selfSet ? "own target" : i.closes ? "window closes" : "deadline";
+    const h = hoursLeft(i.deadline);
+    inner = h >= 0 && h < 48
+      ? `<div class="cd hot"><span class="num">${h}</span>
+             <span class="txt">hours left — ${what} ${fmtWhen(i.deadline)}</span></div>`
+      : `<div class="cd ${cls}"><span class="num">${Math.abs(d)}</span>
+             <span class="txt">${d < 0 ? "days past" : "days left"} — ${what} ${fmtWhen(i.deadline)}</span></div>`;
+    if(i.opens){
+      const o = days(i.opens);
+      inner += `<div class="rolling">${o > 0 ? `Resubmission opens in ${o} days (${fmt(i.opens)}).` : `Resubmission window is open since ${fmt(i.opens)}.`}</div>`;
+    }
     if(i.rolling) inner += `<div class="rolling">Journal submission is rolling — this date is self-imposed.</div>`;
   }else if(i.rolling){
     inner = `<div class="rolling">Rolling submission — journal, no fixed deadline.</div>`;
@@ -385,7 +416,11 @@ function facts(i){
     rows.push(["Submitted", fmt(i.submitted)]);
     rows.push(["Days in review", `${-days(i.submitted)}`]);
   }
-  if(i.deadline) rows.push([i.selfSet ? "Target date" : "Deadline", fmt(i.deadline)]);
+  if(i.decided){
+    rows.push(["Decision", fmt(i.decided)]);
+    rows.push(["Earliest resubmission", fmt(i.opens)]);
+    rows.push(["Window closes", fmt(i.closes)]);
+  }else if(i.deadline) rows.push([i.selfSet ? "Target date" : "Deadline", fmtWhen(i.deadline)]);
   (i.facts||[]).forEach(([k,v]) => rows.push([k, esc(v)]));
   if(i.repo) rows.push(["Repository", `<a href="${i.repo}" target="_blank" rel="noopener">${esc(i.repo.replace(/^https:\/\/github\.com\//,""))} ↗</a>`]);
   if(i.demo) rows.push(["Live site", `<a href="${i.demo}" target="_blank" rel="noopener">open ↗</a>`]);

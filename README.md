@@ -29,6 +29,17 @@ Writing items use `deadline:"YYYY-MM-DD"` and `progress:0-100` instead of
 strip and the deadline timeline all recompute in the browser — no need to touch
 any dates other than the ones you enter.
 
+Dates the page derives on its own:
+
+- `deadline` can include a time and zone (`"2026-09-29T05:59:00+02:00"`); in the
+  last 48 hours the countdown switches to hours.
+- `decided:"YYYY-MM-DD"` plus `resubmit:[1,6]` (min/max months) computes the
+  earliest-resubmission and window-close dates, and uses the close date as the deadline.
+- The "Updated" stamp is the file's real last-modified time, and an open tab
+  reloads hourly so counters stay current.
+
+Nothing reads the journal portals or email — a new decision still needs one edit here.
+
 Common edits:
 
 - **Paper accepted** → change `status` to `"review"`, `stage:2`,
